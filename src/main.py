@@ -7,7 +7,7 @@ from flask import Flask, jsonify, request
 
 # ノードを作る
 # Flaskについて詳しくはこちらを読んでほしい http://flask.pocoo.org/docs/0.12/quickstart/#a-minimal-application
-from blockchain import Blockchain
+from src.blockchain import Blockchain
 
 app = Flask(__name__)
 
