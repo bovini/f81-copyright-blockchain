@@ -61,11 +61,6 @@ def users_transactions(user):
 @app.route('/transactions/<transaction_id>', methods=['GET'])
 def transaction_by_id(transaction_id):
     transaction_id = int(transaction_id)
-    print(transaction_id)
-    print([transaction['id'] for transaction in blockchain.current_transactions])
-    print([transaction['id'] for transaction in blockchain.current_transactions if transaction['id'] == transaction_id])
-    print([transaction['id'] for block in blockchain.chain for transaction in block['transactions']])
-    print([transaction['id'] for block in blockchain.chain for transaction in block['transactions'] if transaction['id'] == transaction_id])
 
     transactions = [transaction
                     for transaction in blockchain.current_transactions
