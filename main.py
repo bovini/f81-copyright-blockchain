@@ -1,7 +1,7 @@
 # coding=utf-8
 import threading
 from uuid import uuid4
-import time
+from time import time
 
 from flask import Flask, jsonify, request
 
@@ -60,6 +60,7 @@ def users_transactions(user):
 
 class Thread:
     def __init__(self):
+        self.timer = time()
         self.stop_event = threading.Event()
 
         self.thr = threading.Thread(target=self.mine)
@@ -87,12 +88,12 @@ class Thread:
     def stop(self):
         self.stop_event.set()
         self.thr.join()
+        print()
+        print(time() - self.timer)
 
 
 # port5000でサーバーを起動する
 if __name__ == '__main__':
     thread = Thread()
-    # t = time()
     app.run(host='0.0.0.0', port=5000, threaded=True)
     thread.stop()
-    # print(int(time()-t))
