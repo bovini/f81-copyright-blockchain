@@ -84,7 +84,7 @@ class Thread:
             # 送信者は、採掘者が新しいコインを採掘したことを表すために"0"とする
             blockchain.new_transaction(
                 user=node_identifire,
-                data="@%s"%(len(blockchain.chain)),
+                data="@%s" % (len(blockchain.chain)),
             )
 
             # チェーンに新しいブロックを加えることで、新しいブロックを採掘する
