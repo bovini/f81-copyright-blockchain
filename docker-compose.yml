@@ -3,6 +3,8 @@ services:
   web:
     build: .
     ports:
-     - "5000:5000"
+      - "5000:5000"
+    volumes:
+      - ./src /app/src
   redis:
     image: "redis:alpine"
