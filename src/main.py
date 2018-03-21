@@ -29,9 +29,9 @@ def new_transaction():
         return 'Missing values', 400
 
     # 新しいトランザクションを作る
-    index = blockchain.new_transaction(values['user'], values['data'])
+    added_transaction = blockchain.new_transaction(values['user'], values['data'])
 
-    response = {'message': f'トランザクションはブロック {index} に追加されました'}
+    response = added_transaction
     return jsonify(response), 201
 
 

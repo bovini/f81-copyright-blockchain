@@ -8,6 +8,7 @@ class Blockchain(object):
     def __init__(self):
         self.chain = []
         self.current_transactions = []
+        self.next_transaction_id = 0
         # ジェネシスブロックを作る
         self.new_block(previous_hash=1, proof=100)
 
@@ -26,7 +27,6 @@ class Blockchain(object):
                                 for transaction in current_transactions
                                 if transaction['data'] not in all_data]
 
-
         # 新しいブロックを作る
         block = {
             'index': len(self.chain) + 1,
@@ -44,12 +44,15 @@ class Blockchain(object):
     def new_transaction(self, user, data):
         # 新しいトランザクションをリストに加えた後，
         # そのトランザクションが加えられるブロック(次に採掘されるブロック)のインデックスを返す．
-        self.current_transactions.append({
+        transaction = {
+            'id': self.next_transaction_id,
             'user': user,
             'data': data,
             'timestamp': int(datetime.now().timestamp()),
-        })
-        return self.last_block['index'] + 1
+        }
+        self.current_transactions.append(transaction)
+        self.next_transaction_id += 1
+        return transaction
 
     @staticmethod
     def hash(block):
