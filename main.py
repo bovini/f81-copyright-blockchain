@@ -45,7 +45,7 @@ def full_chain():
     return jsonify(response), 200
 
 
-@app.route('/users/<user>/transactions')
+@app.route('/users/<user>/transactions', methods=['GET'])
 def users_transactions(user):
     transactions = [transaction
                     for block in blockchain.chain
@@ -56,6 +56,11 @@ def users_transactions(user):
         'length': len(transactions)
     }
     return jsonify(response), 200
+
+
+@app.route('/search/transactions', methods=['GET'])
+def search_transactions():
+    return str(request.args), 200
 
 
 class Thread:
