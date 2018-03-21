@@ -58,11 +58,6 @@ def users_transactions(user):
     return jsonify(response), 200
 
 
-@app.route('/search/transactions', methods=['GET'])
-def search_transactions():
-    return str(request.args), 200
-
-
 class Thread:
     def __init__(self):
         self.timer = time()
