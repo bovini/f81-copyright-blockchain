@@ -91,7 +91,7 @@ class Blockchain(object):
         # パクリ検出
         all_data = [transaction['data']
                     for block in self.chain
-                    for transaction in block]
+                    for transaction in block['transactions']]
 
         for i in range(len(self.current_transactions)):
             if self.current_transactions[i]['data'] in all_data:
