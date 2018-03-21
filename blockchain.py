@@ -93,7 +93,7 @@ class Blockchain(object):
                     for block in self.chain
                     for transaction in block]
 
-        for i in len(self.current_transactions):
+        for i in range(len(self.current_transactions)):
             if self.current_transactions[i] in all_data:
                 del self.current_transactions[i]
 
