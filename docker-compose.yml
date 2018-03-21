@@ -5,6 +5,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./src /app/src
+      - ./src:/app/src
+    command: python src/main.py
   redis:
     image: "redis:alpine"
