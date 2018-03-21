@@ -1,6 +1,7 @@
 # coding=utf-8
 import threading
 from uuid import uuid4
+import time
 
 from flask import Flask, jsonify, request
 
@@ -15,26 +16,6 @@ node_identifire = str(uuid4()).replace('-', '')
 
 # ブロックチェーンクラスをインスタンス化する
 blockchain = Blockchain()
-
-
-# メソッドはGETで/mineエンドポイントを作る
-@app.route('/mine', methods=['GET'])
-def mine():
-    while True:
-        # 次のプルーフを見つけるためプルーフ・オブ・ワークアルゴリズムを使用する
-        last_block = blockchain.last_block
-        last_proof = last_block['proof']
-        proof = blockchain.proof_of_work(last_proof)
-
-        # プルーフを見つけたことに対する報酬を得る
-        # 送信者は、採掘者が新しいコインを採掘したことを表すために"0"とする
-        blockchain.new_transaction(
-            user=node_identifire,
-            data="",
-        )
-
-        # チェーンに新しいブロックを加えることで、新しいブロックを採掘する
-        blockchain.new_block(proof)
 
 
 # メソッドはPOSTで/transactions/newエンドポイントを作る。メソッドはPOSTなのでデータを送信する
@@ -76,10 +57,41 @@ def users_transactions(user):
     }
     return jsonify(response), 200
 
+class Thread():
+    def __init__(self):
+        self.stop_event = threading.Event()
+
+        self.thr = threading.Thread(target=self.mine)
+        self.thr.start()
+
+    # メソッドはGETで/mineエンドポイントを作る
+    # @app.route('/mine', methods=['GET'])
+    def mine(self):
+        while not self.stop_event.is_set():
+            # 次のプルーフを見つけるためプルーフ・オブ・ワークアルゴリズムを使用する
+            last_block = blockchain.last_block
+            last_proof = last_block['proof']
+            proof = blockchain.proof_of_work(last_proof)
+
+            # プルーフを見つけたことに対する報酬を得る
+            # 送信者は、採掘者が新しいコインを採掘したことを表すために"0"とする
+            blockchain.new_transaction(
+                user=node_identifire,
+                data="",
+            )
+
+            # チェーンに新しいブロックを加えることで、新しいブロックを採掘する
+            blockchain.new_block(proof)
+
+    def stop(self):
+        self.stop_event.set()
+        self.thr.join()
+
 
 # port5000でサーバーを起動する
 if __name__ == '__main__':
-    thr = threading.Thread(target=mine)
-    thr.start()
+    thread = Thread()
+    # t = time()
     app.run(host='0.0.0.0', port=5000, threaded=True)
-    thr.join()
+    thread.stop()
+    # print(int(time()-t))

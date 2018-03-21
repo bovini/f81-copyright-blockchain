@@ -149,6 +149,6 @@ class Blockchain(object):
         guess = f'{last_proof}{proof}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
 
-        n = 5
+        n = 5 #難易度調整
 
         return guess_hash[:n] == "0" * n
