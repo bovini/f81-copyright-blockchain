@@ -57,7 +57,8 @@ def users_transactions(user):
     }
     return jsonify(response), 200
 
-class Thread():
+
+class Thread:
     def __init__(self):
         self.stop_event = threading.Event()
 
