@@ -88,6 +88,15 @@ class Blockchain(object):
         return False
 
     def new_block(self, proof, previous_hash=None):
+        # パクリ検出
+        all_data = [transaction['data']
+                    for block in self.chain
+                    for transaction in block]
+
+        for i in len(self.current_transactions):
+            if self.current_transactions[i] in all_data:
+                del self.current_transactions[i]
+
         # 新しいブロックを作る
         block = {
             'index': len(self.chain) + 1,
