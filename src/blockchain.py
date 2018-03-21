@@ -92,10 +92,12 @@ class Blockchain(object):
         all_data = [transaction['data']
                     for block in self.chain
                     for transaction in block['transactions']]
+        current_transactions = []
 
         for i in range(len(self.current_transactions)):
-            if self.current_transactions[i]['data'] in all_data:
-                del self.current_transactions[i]
+            if self.current_transactions[i]['data'] not in all_data:
+                current_transactions.append(self.current_transactions[i])
+        self.current_transactions = current_transactions
 
         # 新しいブロックを作る
         block = {
