@@ -1,10 +1,10 @@
 # coding: UTF-8
 import hashlib
 import json
-from datetime import time, datetime
+from datetime import datetime
 from urllib.parse import urlparse
 
-from pip._vendor import requests
+import requests
 
 
 class Blockchain(object):
