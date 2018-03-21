@@ -92,16 +92,10 @@ class Blockchain(object):
         all_data = [transaction['data']
                     for block in self.chain
                     for transaction in block['transactions']]
-                    
-        current_transactions = []
-        for transaction in self.current_transactions:
-            if transaction not in current_transactions:
-                current_transactions.append(transaction)
 
         current_transactions = [transaction
-                                for transaction in current_transactions
+                                for transaction in self.current_transactions
                                 if transaction['data'] not in all_data]
-
 
         # 新しいブロックを作る
         block = {
@@ -120,12 +114,17 @@ class Blockchain(object):
     def new_transaction(self, user, data):
         # 新しいトランザクションをリストに加えた後，
         # そのトランザクションが加えられるブロック(次に採掘されるブロック)のインデックスを返す．
-        self.current_transactions.append({
-            'user': user,
-            'data': data,
-            'timestamp': int(datetime.now().timestamp()),
-        })
-        return self.last_block['index'] + 1
+        # パクリ検出
+        all_data = [transaction['data']
+                    for transaction in self.current_transactions]
+
+        if data not in all_data:
+            self.current_transactions.append({
+                'user': user,
+                'data': data,
+                'timestamp': int(datetime.now().timestamp()),
+            })
+            return self.last_block['index'] + 1
 
     @staticmethod
     def hash(block):
