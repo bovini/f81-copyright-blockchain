@@ -94,7 +94,7 @@ class Blockchain(object):
                     for transaction in block]
 
         for i in range(len(self.current_transactions)):
-            if self.current_transactions[i] in all_data:
+            if self.current_transactions[i]['data'] in all_data:
                 del self.current_transactions[i]
 
         # 新しいブロックを作る
